@@ -1,1 +1,1 @@
-# referral-recommendation
+# booking-platform

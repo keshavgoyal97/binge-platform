@@ -3,7 +3,7 @@ import time
 from app.exceptions import GenericException
 from app.exceptions.validation_exceptions import MissingRequiredField
 from app.responses.error import ErrorResponse
-from app.routers import eligibility, health, recommendation
+from app.routers import admin_resource, booking_resource, user_resource
 from app.utils.logger import logger
 from app.utils.postgresdb import prod_others_db_reader, prod_others_db_writer
 from fastapi import FastAPI, Request
@@ -14,9 +14,9 @@ from starlette.exceptions import HTTPException as StarletteException
 log = logger()
 server = FastAPI()
 
-server.include_router(health.router)
-server.include_router(eligibility.router)
-server.include_router(recommendation.router)
+server.include_router(admin_resource.router)
+server.include_router(booking_resource.router)
+server.include_router(user_resource.router)
 
 
 @server.on_event("shutdown")
