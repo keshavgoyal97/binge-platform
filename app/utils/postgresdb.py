@@ -102,6 +102,7 @@ class PostgresDB:
     def close(self) -> None:
         self.__connection_pool._closeall()
 
-
-prod_others_db_writer = PostgresDB(url=get_config("PROD_OTHERS_DB_WRITER_URL"))
-prod_others_db_reader = PostgresDB(url=get_config("PROD_OTHERS_DB_READER_URL"))
+prod_others_db_writer = None
+def __init_db_pool():
+    global prod_others_db_writer
+    prod_others_db_writer = PostgresDB(url=get_config("PROD_OTHERS_DB_WRITER_URL"))

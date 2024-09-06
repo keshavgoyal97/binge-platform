@@ -5,6 +5,6 @@ from pydantic import BaseModel
 
 class Slot(BaseModel):
     is_available: bool
-    start_time: str = Field(min_length=5, max_length=5, frozen=True)
-    end_time: str = Field(min_length=5, max_length=5, frozen=True)
+    start_time: str
+    end_time: str
     is_short_slot: bool

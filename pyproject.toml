@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "private-theatre"
+name = "binge-platform"
 version = "1.0.0"
 description = "booking platform"
 authors = ["Data engineering <data-engineering@getsimpl.com>"]
@@ -17,6 +17,7 @@ gremlinpython = "^3.6.3"
 psycopg2-binary = "^2.9.6"
 requests = "^2.31.0"
 yoyo-migrations = "^8.2.0"
+python-dotenv = "^1.0.1"
 
 
 [tool.poetry.group.dev.dependencies]

@@ -1,15 +1,20 @@
 import time
 
+import uvicorn
+from dotenv import load_dotenv
+
 from app.exceptions import GenericException
 from app.exceptions.validation_exceptions import MissingRequiredField
 from app.responses.error import ErrorResponse
 from app.routers import admin_resource, booking_resource, user_resource
 from app.utils.logger import logger
-from app.utils.postgresdb import prod_others_db_reader, prod_others_db_writer
+from app.utils.postgresdb import prod_others_db_writer, __init_db_pool
 from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import ORJSONResponse
 from starlette.exceptions import HTTPException as StarletteException
+
+from database_setup import setup_db
 
 log = logger()
 server = FastAPI()
@@ -21,7 +26,7 @@ server.include_router(user_resource.router)
 
 @server.on_event("shutdown")
 async def app_shutdown():
-    prod_others_db_reader.close()
+    # prod_others_db_reader.close()
     prod_others_db_writer.close()
 
 
@@ -75,3 +80,9 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
     raise MissingRequiredField(
         field=".".join([str(each) for each in details[0]["loc"]])
     )
+
+if __name__ == "__main__":
+    load_dotenv()
+    __init_db_pool()
+    setup_db()
+    uvicorn.run(server, host="0.0.0.0", port=8000)
