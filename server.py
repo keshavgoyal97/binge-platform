@@ -2,13 +2,13 @@ import time
 
 import uvicorn
 from dotenv import load_dotenv
-
+import config_loader
 from app.exceptions import GenericException
 from app.exceptions.validation_exceptions import MissingRequiredField
 from app.responses.error import ErrorResponse
 from app.routers import admin_resource, booking_resource, user_resource
 from app.utils.logger import logger
-from app.utils.postgresdb import prod_others_db_writer, __init_db_pool
+from app.utils.postgresdb import prod_others_db_writer
 from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import ORJSONResponse
@@ -22,7 +22,6 @@ server = FastAPI()
 server.include_router(admin_resource.router)
 server.include_router(booking_resource.router)
 server.include_router(user_resource.router)
-
 
 @server.on_event("shutdown")
 async def app_shutdown():
@@ -82,7 +81,5 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
     )
 
 if __name__ == "__main__":
-    load_dotenv()
-    __init_db_pool()
     setup_db()
     uvicorn.run(server, host="0.0.0.0", port=8000)
