@@ -181,11 +181,11 @@ class DeleteMerchantCreditLineException(GenericException):
 
 
 class FetchOneUserMetadataException(GenericException):
-    def __init__(self, ex: Exception, phone_number: str) -> None:
+    def __init__(self, ex: Exception, id: str) -> None:
         message = FETCH_ONE_EXCEPTION.message
         super().__init__(
             message,
-            phone_number=phone_number,
+            id=id,
             ex=ex.__str__(),
         )
 

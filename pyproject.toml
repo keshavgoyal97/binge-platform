@@ -2,11 +2,11 @@
 name = "binge-platform"
 version = "1.0.0"
 description = "booking platform"
-authors = ["Data engineering <data-engineering@getsimpl.com>"]
+authors = ["Data engineering"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = "^3.8"
 fastapi = "^0.95.2"
 structlog = "^23.1.0"
 gunicorn = "^20.1.0"
@@ -18,11 +18,14 @@ psycopg2-binary = "^2.9.6"
 requests = "^2.31.0"
 yoyo-migrations = "^8.2.0"
 python-dotenv = "^1.0.1"
+sib-api-v3-sdk = "^7.6.0"
+fastapi-utilities = "^0.2.0"
+jinja2 = "^3.1.4"
+pdfkit = "^1.0.0"
 
 
 [tool.poetry.group.dev.dependencies]
 pre-commit = "^3.3.1"
-flake8 = "^6.0.0"
 black = "^23.3.0"
 seed-isort-config = "^2.2.0"
 isort = "^5.12.0"
