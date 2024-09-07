@@ -1,0 +1,69 @@
+{
+  "home_page_image": str,
+  "our_services": [
+    {
+      "id": "mayank",
+      "name": str,
+      "image": str
+    }
+  ],
+  "themes_supported": [
+    {
+      "id": str,
+      "name": str,
+      "image": str
+    }
+  ],
+  "cakes": [
+    {
+      "id": str,
+      "name": str,
+      "price": int,
+      "image": str
+    }
+  ],
+  "decoration": [
+    {
+      "id": str,
+      "name": str,
+      "price": int,
+      "image": str
+    }
+  ],
+  "about": {
+    "header": str,
+    "image": str,
+    "paragraphs": []
+  },
+  "tnc": {
+    "header": str,
+    "image": str,
+    "paragraphs": []
+  },
+  "refund_policy": {
+    "header": str,
+    "image": str,
+    "paragraphs": []
+  },
+  "branches": [
+    {
+      "city":,
+      "name":,
+      "id":,
+      "main_image",
+      :,
+      "gallery_photos": [],
+      "gallery_videos": []
+    }
+  ],
+  "theatres": [
+    {
+      "id": str,
+      "name": str,
+      "city": str,
+      "branch_id": str,
+      "gallery_photos": [],
+      "gallery_video": str
+    }
+  ]
+}

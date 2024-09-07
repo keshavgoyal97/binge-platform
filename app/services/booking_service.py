@@ -16,14 +16,6 @@ _log = logger()
 
 class BookingService:
 
-    def get_all_info(self) -> AllInfo:
-        _log.info("No record found for phone number {}".format(phone_number))
-
-        pass
-
-    def get_slots(self, request: GetSlotsRequest) -> List[SlotAvailabilityInfo]:
-        pass
-
     def create_booking(self, request: CreateBooking) -> GenericResponse:
         # Generate a timestamp-based ID
         timestamp_id = 'B' + datetime.now().strftime('%Y%m%d%H%M%S')
