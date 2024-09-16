@@ -1,11 +1,9 @@
 import time
 
 import uvicorn
-from dotenv import load_dotenv
-import config_loader
 from app.exceptions import GenericException
 from app.exceptions.validation_exceptions import MissingRequiredField
-from app.responses.error import ErrorResponse
+from app.models.error import ErrorResponse
 from app.routers import admin_resource, booking_resource, user_resource
 from app.utils.logger import logger
 from app.utils.postgresdb import prod_others_db_writer

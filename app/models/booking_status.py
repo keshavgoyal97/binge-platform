@@ -8,6 +8,3 @@ class BookingStatus(Enum):
     COMPLETED = 4
     CANCELLED = 5
     UPDATED = 6
-
-
-

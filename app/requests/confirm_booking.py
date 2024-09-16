@@ -1,7 +1,4 @@
-from app.exceptions.validation_exceptions import (
-    InvalidPhoneNumberException, MissingRequiredField,
-)
-from pydantic import BaseModel, validator, Field
+from pydantic import BaseModel, Field
 
 
 class BookingConfirmation(BaseModel):

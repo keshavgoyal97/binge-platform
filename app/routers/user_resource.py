@@ -1,9 +1,6 @@
-from typing import List
-
 from app.models.all_info import AllInfo
-from app.models.slot_availability_info import SlotAvailabilityInfo
-from app.requests.get_slots_request import GetSlotsRequest
-from app.responses.generic_response import GenericResponse
+from app.models.generic_response import GenericResponse
+from app.services.user_service import UserService
 from app.utils.logger import logger
 from fastapi import APIRouter
 
@@ -14,23 +11,19 @@ router = APIRouter(
     tags=['user']
 )
 
+user_service = UserService()
+
 
 @router.post("/send/otp")
 def send_otp(phone_number: str) -> GenericResponse:
-    _log.info("No record found for phone number {}".format(phone_number))
-    pass
+    return user_service.send_otp_through_sms(phone_number=phone_number)
 
 
 @router.post("/validate/otp")
 def validate_otp(phone_number: str, otp: str) -> GenericResponse:
-    pass
+    return user_service.validate_otp(phone_number=phone_number, otp=otp)
 
 
 @router.get('/get/all/info')
 def get_all_info() -> AllInfo:
-    pass
-
-
-@router.post('/get/slots')
-def get_slots(request: GetSlotsRequest) -> List[SlotAvailabilityInfo]:
-    pass
+    return user_service.get_all_info()
