@@ -1,12 +1,16 @@
 import io
 import json
 import uuid
+from typing import Optional
+
+import boto3
 
 from simpl_utils.clients.s3 import S3
 from simpl_utils.config import aws_default_bucket
-from simpl_utils.logger import Logger
+from app.utils.logger import logger
+from app.utils.config import get_config
 
-logger = Logger()
+logger = logger()
 
 
 class S3Manager:
@@ -57,4 +61,30 @@ class S3Manager:
             return None
         except Exception as e:  # noqa
             logger.error('Error while read payload: {}'.format(str(e)))
+            return None
+
+    def upload_file_to_s3(self, file_path) -> Optional[str]:
+
+        try:
+            s3_object_key = self.unique_payload_filename
+
+            s3_client = boto3.client(
+                service_name='s3',
+                region_name=get_config('AWS_DEFAULT_REGION'),
+                aws_access_key_id=get_config('AWS_ACCESS_KEY_ID'),
+                aws_secret_access_key=get_config('AWS_SECRET_ACCESS_KEY')
+            )
+
+            response = s3_client.upload_file(file_path, get_config('AWS_BUCKET'), s3_object_key)
+
+            bucket_location = boto3.client('s3').get_bucket_location(Bucket=get_config('AWS_BUCKET'))
+            object_url = "https://s3-{0}.amazonaws.com/{1}/{2}".format(
+                bucket_location['LocationConstraint'],
+                get_config('AWS_BUCKET'),
+                s3_object_key)
+
+            return object_url
+
+        except Exception as e:  # noqa
+            logger.error(f'Error while uploading file to s3 payload: {file_path}')
             return None

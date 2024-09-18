@@ -12,6 +12,7 @@ from app.repository.booking import BookingRepository
 from app.requests.confirm_booking import BookingConfirmation
 from app.models.generic_response import GenericResponse
 from app.requests.get_slots_request import GetSlotsRequest
+from app.services.user_service import UserService
 from app.utils.config import get_config
 from app.utils.logger import logger
 
@@ -106,6 +107,7 @@ def send_booking_email(booking: Booking) -> bool:
 class BookingService:
     def __init__(self):
         self.booking_repository = BookingRepository()
+        self.user_service = UserService()
 
     def create_booking(self, request: Booking) -> GenericResponse:
         # Generate a timestamp-based ID
@@ -131,7 +133,44 @@ class BookingService:
         return self.booking_repository.get_bookings_for_branch_id(booking_date=date, branch_id=branch_id)
 
     def get_slots(self, request: GetSlotsRequest) -> List[SlotAvailabilityInfo]:
-        pass
+        all_data = self.user_service.get_all_info()
+        if not all_data:
+            raise Exception("Got empty metadata")
+
+        theatre_id_list = []
+        for theatre in all_data.Theatres:
+            if theatre.branch_id == request.branch_id:
+                theatre_bookings = self.booking_repository.get_bookings_for_theatre_id(
+                    booking_date=request.date.strftime("%Y-%m-%d"),
+                    theatre_id=theatre.id)
+
+                theatre_all_slots = theatre.all_slots
+                total_number_of_slots = len(theatre_all_slots)
+                number_of_booked_slots = 0
+
+                all_slots_with_updated_status = []
+                for slot in theatre_all_slots:
+                    is_booked = False
+                    for booking in theatre_bookings:
+                        booking_start_time = booking.start_time
+                        booking_end_time = booking.end_time
+
+                        if booking_start_time == slot.start_time and booking_end_time == slot.end_time:
+                            is_booked = True
+                            number_of_booked_slots += 1
+                            break
+
+                    if is_booked:
+                        slot.is_available = False
+                    all_slots_with_updated_status.append(slot)
+
+                slot_availability_info = SlotAvailabilityInfo(theatre_id=theatre.id,
+                                                              number_of_slots_available=total_number_of_slots - number_of_booked_slots,
+                                                              slots=all_slots_with_updated_status)
+
+                theatre_id_list.append(slot_availability_info)
+
+        return theatre_id_list
 
     @repeat_at(cron="0 5 * * *")
     async def send_reminder(self):
